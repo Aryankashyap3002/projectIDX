@@ -10,16 +10,16 @@ export const createProjectService = async () => {
     // create projecct on the project repo such that every project has a unique id.
 
     const projectId = uuid4();
-    console.log("project Id: ", projectId);
+    console.log("project Id inside service : ", projectId);
 
     await fs.mkdir(`./projects/${projectId}`);
 
     // now call the create vite command for creating vite project on newly created project folder
 
-    const response = await execPromisified;(REACT_PROJECT_COMMAND, {
+    const response = await execPromisified(REACT_PROJECT_COMMAND, {
         cwd: `./projects/${projectId}` 
     });
-
+    console.log
     return projectId;
 }
 

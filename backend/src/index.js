@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 import apiRouter from './routes/index.js'
 import chokidar from 'chokidar';
 // import path from 'node:path';
-import { handleEditorSocketEvent } from '../projects/78ea223f-b4a2-4bc5-9779-3ae0957bb1e2/sandbox/src/socketHandler/editorHandler.js';
+import { handleEditorSocketEvents } from './socketHandler/editorHandler.js';
 // import queryString from 'query-string';
 
 const app = express();
@@ -54,8 +54,8 @@ editorNamespace.on("connection", (socket) => {
         })
     }
 
-   handleEditorSocketEvent(socket); 
-
+    handleEditorSocketEvents(socket, editorNamespace); 
+  
     // socket.on('disconnect', async () => {
     //     await watcher.close();
     //     console.log("editor disconnected");
