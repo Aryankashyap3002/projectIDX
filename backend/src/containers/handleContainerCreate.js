@@ -63,7 +63,7 @@ export const handleContainerCreate = async (projectId, terminalSocket, req, tcpS
             AttachStdout: true,
             AttachStderr: true,
             Cmd: ['/bin/bash'],
-            name: projectId,
+            name: projectId,  // when user is added then user/projectId
             Tty: true,
             User: "sandbox",
             Volumes: {
