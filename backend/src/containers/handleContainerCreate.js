@@ -1,16 +1,41 @@
 import Docker from 'dockerode';
 // import path from 'path';
-const docker = new Docker();
 
-export const listContainer = async () => {
+const docker = new Docker({
+    host: process.env.DOCKER_HOST || undefined,
+    port: process.env.DOCKER_PORT || undefined,
+    ca: process.env.DOCKER_CA_CERT ? fs.readFileSync(process.env.DOCKER_CA_CERT) : undefined,
+    cert: process.env.DOCKER_CERT ? fs.readFileSync(process.env.DOCKER_CERT) : undefined,
+    key: process.env.DOCKER_KEY ? fs.readFileSync(process.env.DOCKER_KEY) : undefined,
+  });
 
-    const containers = await docker.listContainers();
-    console.log("Containers", containers);
-    // PRINT PORTS ARRAY FROM ALL CONTAINER
-    containers.forEach((containerInfo) => {
-        console.log(containerInfo.Ports);
-    })
-}
+// Add at the top of your file to check Docker connectivity
+// docker.version().then(version => {
+//     console.log("Connected to Docker API:", version);
+//   }).catch(err => {
+//     console.error("Docker API connection error:", err);
+//   });
+
+//   docker.listImages().then(images => {
+//     console.log("Available images:");
+//     images.forEach(image => {
+//       console.log(image.RepoTags);
+//     });
+//   }).catch(err => {
+//     console.error("Error listing images:", err);
+//   });
+
+
+
+// export const listContainer = async () => {
+
+//     const containers = await docker.listContainers();
+//     console.log("Containers", containers);
+//     // PRINT PORTS ARRAY FROM ALL CONTAINER
+//     containers.forEach((containerInfo) => {
+//         console.log(containerInfo.Ports);
+//     })
+// }
 
 export const handleContainerCreate = async (projectId, terminalSocket, req, tcpSocket, head) => {
     console.log("Project id received for container create", projectId);
@@ -33,7 +58,7 @@ export const handleContainerCreate = async (projectId, terminalSocket, req, tcpS
         console.log("Creating a new container");
 
         const container = await docker.createContainer({
-            Image: 'sandbox', // name given by us for the written dockerfile
+            Image: 'sandbox:latest', // name given by us for the written dockerfile
             AttachStdin: true,
             AttachStdout: true,
             AttachStderr: true,

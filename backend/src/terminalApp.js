@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { createServer } from 'node:http';
-import { handleContainerCreate, listContainer } from './containers/handleContainerCreate.js';
+import { handleContainerCreate } from './containers/handleContainerCreate.js';
 import { WebSocketServer } from 'ws';
 import { handleTerminalCreation } from './containers/handleTerminalCreation.js';
 
@@ -32,8 +32,16 @@ webSocketForTerminal.on("connection", async (ws, req, container) => {
         console.log("Project id received after connection", projectId);
 
         const container = await handleContainerCreate(projectId, webSocketForTerminal);
+        if (container) {
+              // your exec configuration
+              handleTerminalCreation(container, ws);
 
-        handleTerminalCreation(container, ws);
+          } else {
+            console.error("Container creation failed");
+            // Handle the error case
+          }
+
+        
     }
     
 });
