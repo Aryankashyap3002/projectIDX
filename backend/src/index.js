@@ -6,6 +6,7 @@ import apiRouter from './routes/index.js';
 import { PORT } from './config/serverConfig.js';
 import chokidar from 'chokidar';
 import { handleEditorSocketEvents } from './socketHandlers/editorHandler.js';
+import connectDB from './config/dbConfig.js';
 
 
 const app = express();
@@ -59,5 +60,6 @@ editorNamespace.on("connection", (socket) => {
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    console.log(process.cwd())
+    console.log(process.cwd());
+    connectDB();
 });
