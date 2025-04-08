@@ -1,11 +1,22 @@
 import './App.css'
-import { Router } from './Router'
-// import { io } from 'socket.io-client';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { AppRoutes } from '@/Routes';
+
+import { AppContextProvider } from './context/AppContextProvider';
+
 function App() {
-  // const socket = io("http://localhost:3000");
+
+  const queryClient = new QueryClient();
 
   return (
-    <Router />
+    <QueryClientProvider  client={queryClient}>
+      <AppContextProvider>
+      <AppRoutes />
+      </AppContextProvider>
+    </QueryClientProvider>
+    
   )
   
 }

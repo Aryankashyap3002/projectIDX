@@ -2,7 +2,7 @@ import axios from '../config/axiosConfig';
 
 export const createProjectApi = async () => {
     try {
-        const response = await axios.post('/api/v1/projects');
+        const response = await axios.post('/projects');
         console.log(response.data);
         return response.data;
     } catch(error) {
@@ -13,7 +13,7 @@ export const createProjectApi = async () => {
 
 export const getProjectTree = async ({ projectId }) => {
     try {
-        const response = await axios.get(`/api/v1/projects/${projectId}/tree`);
+        const response = await axios.get(`/projects/${projectId}/tree`);
         console.log(response.data);
         return response?.data?.data;
     } catch(error) {
