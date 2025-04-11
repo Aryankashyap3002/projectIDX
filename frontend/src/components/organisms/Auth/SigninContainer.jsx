@@ -54,3 +54,5 @@ import { useEffect, useState } from 'react';
          />
      );
  };
+
+ // passwordreset?token=asddfgfhg vid19

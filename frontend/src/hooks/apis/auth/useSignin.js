@@ -7,14 +7,14 @@ import { useMutation } from '@tanstack/react-query';
  export const useSignin = () => {
     const { setAuth } = useAuth();
      const { isPending, isSuccess, error, mutateAsync: signinMutation } = useMutation({
-         mutationFn: signInRequest,
+         mutationFn: signInRequest, 
          onSuccess: (response) => {
              console.log('Scuccessfully signed in', response);
 
              const userObject = JSON.stringify(response.data);
 
              localStorage.setItem('user', userObject);
-             localStorage.setItem('token', response.data.token);
+             localStorage.setItem('token', response.data.token); 
 
              setAuth({
                 token: response.data.token,
@@ -30,9 +30,9 @@ import { useMutation } from '@tanstack/react-query';
                     backgroundColor: '#129903',
                 },
                 description: 'You will be redirected to the login page in a few seconds',
-                // Add this to style the description text
+                // Add this to style the description text 
                 descriptionStyle: {
-                    color: 'black'
+                    color: 'black' 
                 }
             });
          },

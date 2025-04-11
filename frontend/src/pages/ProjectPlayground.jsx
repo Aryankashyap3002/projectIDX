@@ -11,6 +11,7 @@ import { Browser } from "../components/organisms/Browser/Browser";
 import { Button } from "antd";
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
+import { UserButton } from "@/components/atoms/UserButton/UserButton";
 export const ProjectPlayground = () => {
 
     const {projectId: projectIdFromUrl } = useParams();
@@ -47,6 +48,7 @@ export const ProjectPlayground = () => {
     return (
         <>
         <div style={{ display: "flex" }}>
+            <UserButton /> 
             { projectId && (
                     <div
                         style={{
@@ -102,11 +104,12 @@ export const ProjectPlayground = () => {
                 </Allotment>
 
             </div>
+
         </div>
            
             {/* <EditorButton isActive={false} /> 
             <EditorButton isActive={true}/>  */}
-            
+           
             
         </>
     )

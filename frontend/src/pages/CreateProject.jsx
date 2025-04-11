@@ -13,6 +13,7 @@ export const CreateProject = () => {
         console.log("Going to trigger the api");
         try {
             const response = await createProjectMutation();
+            console.log("createProject", response);
             console.log("Now we should redirect to the editor");
             navigate(`/project/${response.data}`)
         } catch(error) {
@@ -34,6 +35,7 @@ export const CreateProject = () => {
                     </Button>
                 </Flex>
             </Col>
+              
             
         </Row>
             

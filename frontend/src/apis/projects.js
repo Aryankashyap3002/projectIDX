@@ -2,11 +2,12 @@ import axios from '../config/axiosConfig';
 
 export const createProjectApi = async () => {
     try {
+        console.log("Sending request to:", import.meta.env.VITE_BACKEND_URL + '/projects');
         const response = await axios.post('/projects');
-        console.log(response.data);
+        console.log("Response received:", response.data);
         return response.data;
     } catch(error) {
-        console.log(error);
+        console.log("Error details:", error.message, error.response || 'No response');
         throw error;
     }
 }
