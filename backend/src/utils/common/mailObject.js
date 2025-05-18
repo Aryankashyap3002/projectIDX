@@ -1,6 +1,6 @@
 import { APP_LINK } from "../../config/serverConfig.js"
 
-export const workpaceJoinMail = function (workspace) {
+export const workspaceJoinMail = function (workspace) {
     return {
         from: MAIL_ID,
         subject: 'You have been added to a workspace',

@@ -3,7 +3,7 @@ import { ENABLE_EMAIL_VERIFICATION } from "../config/serverConfig.js";
 import userRepository from "../repositories/userRepository.js"
 import ClientError from "../utils/errors/clientError.js";
 import ValidationError from "../utils/errors/validationError.js";
-import { addEmailtoMailQueue } from "../producers/mailQueueProducers.js";
+import { addEmailtoMailQueue } from "../producers/mailQueueProducer.js";
 import { verfiEmailMail } from "../utils/common/mailObject.js";
 import { createJWT } from "../utils/common/authUtils.js"; 
 import bcrypt from "bcrypt";
