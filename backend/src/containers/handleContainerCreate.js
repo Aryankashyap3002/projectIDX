@@ -9,33 +9,7 @@ const docker = new Docker({
     key: process.env.DOCKER_KEY ? fs.readFileSync(process.env.DOCKER_KEY) : undefined,
   });
 
-// Add at the top of your file to check Docker connectivity
-// docker.version().then(version => {
-//     console.log("Connected to Docker API:", version);
-//   }).catch(err => {
-//     console.error("Docker API connection error:", err);
-//   });
 
-//   docker.listImages().then(images => {
-//     console.log("Available images:");
-//     images.forEach(image => {
-//       console.log(image.RepoTags);
-//     });
-//   }).catch(err => {
-//     console.error("Error listing images:", err);
-//   });
-
-
-
-// export const listContainer = async () => {
-
-//     const containers = await docker.listContainers();
-//     console.log("Containers", containers);
-//     // PRINT PORTS ARRAY FROM ALL CONTAINER
-//     containers.forEach((containerInfo) => {
-//         console.log(containerInfo.Ports);
-//     })
-// }
 
 export const handleContainerCreate = async (projectId, terminalSocket, req, tcpSocket, head) => {
     console.log("Project id received for container create", projectId);
@@ -119,7 +93,7 @@ export async function getContainerPort(containerName) {
 
     if(container.length > 0) {
         const containerInfo = await docker.getContainer(container[0].Id).inspect();
-        console.log("Container info", containerInfo);
+        // console.log("Container info", containerInfo);
         try {
             return containerInfo?.NetworkSettings?.Ports["5173/tcp"][0].HostPort;
         } catch(error) {

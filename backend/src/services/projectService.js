@@ -19,18 +19,17 @@ export const createProjectService = async (name) => {
   return projectCreationQueue.add(async () => {
     const projectId = uuid4();
     const projectPath = `./projects/${projectId}`;
+    let REACT_PROJECT_COMMAND2 = REACT_PROJECT_COMMAND;
 
     if(name) {
-      REACT_PROJECT_COMMAND = `npm create vite@latest ${name} --yes -- --template react`;
-    } else {
-      REACT_PROJECT_COMMAND = REACT_PROJECT_COMMAND;
-    }
+      REACT_PROJECT_COMMAND2 = `npm create vite@latest ${name} --yes -- --template react`;
+    } 
     
     try {
       // Create directory and start project creation
       await Promise.all([
         fs.mkdir(projectPath),
-        execPromisified(REACT_PROJECT_COMMAND, { cwd: projectPath })
+        execPromisified(REACT_PROJECT_COMMAND2, { cwd: projectPath })
       ]);
       
       return projectId;
@@ -56,16 +55,32 @@ export const getAllProjectsService = async () => {
         // Read all directories in the projects folder
         const dirEntries = await fs.readdir(projectsDir, { withFileTypes: true });
         
-        // Filter only directories (each directory represents a project)
-        const projectDirs = dirEntries.filter(entry => entry.isDirectory());
+        // Filter only directories (each UUID directory)
+        const uuidDirs = dirEntries.filter(entry => entry.isDirectory());
         
-        // Map project directories to project info objects
-        const projects = await Promise.all(projectDirs.map(async (dir) => {
-            const projectId = dir.name;
-            const projectPath = path.join(projectsDir, projectId);
+        // Map UUID directories to project info objects
+        const projects = await Promise.all(uuidDirs.map(async (uuidDir) => {
+            const uuid = uuidDir.name;
+            const uuidPath = path.join(projectsDir, uuid);
             
             try {
-                // Read project package.json to get more info (if needed)
+                // Read the subdirectory inside the UUID directory
+                const subDirs = await fs.readdir(uuidPath, { withFileTypes: true });
+                const projectDir = subDirs.find(entry => entry.isDirectory());
+                
+                if (!projectDir) {
+                    // No subdirectory found, return minimal info
+                    return {
+                        id: uuid,
+                        name: uuid,
+                        error: 'No project directory found'
+                    };
+                }
+                
+                const projectName = projectDir.name;
+                const projectPath = path.join(uuidPath, projectName);
+                
+                // Read project package.json
                 const packageJsonPath = path.join(projectPath, 'package.json');
                 let packageInfo = {};
                 
@@ -73,25 +88,26 @@ export const getAllProjectsService = async () => {
                     const packageJsonContent = await fs.readFile(packageJsonPath, 'utf8');
                     packageInfo = JSON.parse(packageJsonContent);
                 } catch (err) {
-                    // Package.json might not exist or be readable, continue with empty object
+                    // Package.json might not exist or be readable
+                    console.warn(`Failed to read package.json for ${projectName}:`, err.message);
                 }
                 
                 // Get project stats
                 const stats = await fs.stat(projectPath);
                 
                 return {
-                    id: projectId,
-                    name: packageInfo.name || projectId,
+                    id: uuid,
+                    name: packageInfo.name || projectName,
                     description: packageInfo.description || '',
                     createdAt: stats.birthtime,
                     lastModified: stats.mtime,
                     path: projectPath
                 };
             } catch (err) {
-                // If there's an error with this specific project, return minimal info
+                // If there's an error with this UUID directory, return minimal info
                 return {
-                    id: projectId,
-                    name: projectId,
+                    id: uuid,
+                    name: uuid,
                     error: 'Failed to read project details'
                 };
             }
@@ -105,4 +121,4 @@ export const getAllProjectsService = async () => {
         console.error('Error listing projects:', error);
         throw new Error('Failed to list projects: ' + error.message);
     }
-}
+};
